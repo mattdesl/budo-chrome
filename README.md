@@ -38,7 +38,7 @@ Options:
 The other options are passed along to [budō](https://github.com/mattdesl/budo) and browserify/watchify. e.g.
 
 ```sh
-budō Options:
+budo Options:
     --outfile, -o   path to output bundle
     --port          port to serve content, default 9966
     --dir           the directory to serve, and the base for --outfile
