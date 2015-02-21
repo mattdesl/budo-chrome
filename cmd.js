@@ -1,4 +1,10 @@
 #!/usr/bin/env node
+
+require('bole').output({
+    stream: process.stdout,
+    level: 'debug'
+})
+
 var launch = require('chrome-launch')
 var tmpdir = require('budo/lib/tmpdir')
 var chrome = require('./lib/remote-interface')
