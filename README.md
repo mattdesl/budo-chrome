@@ -24,7 +24,7 @@ This should open Chrome with the remote debugger attached. Changing `index.js` w
 
 ## about
 
-See [the docs](docs/) for information on how to get set up. See [the demo](https://www.youtube.com/watch?v=cfgeN3G_Gl0) and its [source code](https://github.com/mattdesl/budo-ball-example) for an example of how it looks in practice. 
+See [the docs](docs/README.md) for information on how to get set up. See [the demo](https://www.youtube.com/watch?v=cfgeN3G_Gl0) and its [source code](https://github.com/mattdesl/budo-ball-example) for an example of how it looks in practice. 
 
 ## Usage
 
