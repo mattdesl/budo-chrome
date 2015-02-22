@@ -77,11 +77,11 @@ function render(dt) {
 
 In some cases, if your bundle only includes "state" and no render or update functions, it may get collected and not appear at all during remote script parsing. 
 
-## large bundles
+#### large bundles
 
 When the bundle size reaches roughly over 600kb, you may start seeing very long pauses during script injection. This is a [known issue](https://code.google.com/p/v8/issues/detail?id=3894&q=liveedit&colspec=ID%20Type%20Status%20Priority%20Owner%20Summary%20HW%20OS%20Area%20Stars) and will hopefully be fixed in time. 
 
-## faster watchify builds
+#### faster watchify builds
 
 Watchify includes a 600ms delay by default, for better cross-platform support. Some systems (tested on OSX Yosemite) can get by without this delay, which makes script injection much more satisfying to work with.
 
