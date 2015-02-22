@@ -6,7 +6,7 @@
 
 <sup>[(click for demo)](https://www.youtube.com/watch?v=cfgeN3G_Gl0)</sup>
 
-A layer on top of [budō](https://github.com/mattdesl/budo) which handles live script injection for Chrome. This allows you to make updates to animations and graphics without destroying application state.  
+A browserify dev server on top of [budō](https://github.com/mattdesl/budo), providing live script injection for Chrome. On filesave, this can make updates to animations and graphics without destroying application state. 
 
 Under the hood, this uses v8 LiveEdit through Chrome's Remote Debugging protocol. The technology is still experimental, and may not be suitable yet for widespread production use. 
 
@@ -21,6 +21,10 @@ budo-chrome index.js --open | garnish -v
 ```
 
 This should open Chrome with the remote debugger attached. Changing `index.js` will incrementally update a `bundle.js` file and inject the new source into Chrome. 
+
+## about
+
+See [the docs](docs/) for information on how to get set up. See [the demo](https://www.youtube.com/watch?v=cfgeN3G_Gl0) and its [source code](https://github.com/mattdesl/budo-ball-example) for an example of how it looks in practice. 
 
 ## Usage
 
