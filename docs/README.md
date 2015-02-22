@@ -2,8 +2,6 @@
 
 How to use Chrome Script Injection with budō-chrome.
 
-[(demo in action)](https://www.youtube.com/watch?v=cfgeN3G_Gl0)
-
 You need Chrome installed for this to work. Only tested on OSX and Linux so far ([tweet me](https://twitter.com/mattdesl) or post a bug if you find issues). 
 
 ### install
