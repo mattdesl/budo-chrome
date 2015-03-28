@@ -24,7 +24,8 @@
   "devDependencies": {
     "canvas-testbed": "^1.0.3",
     "garnish": "^2.1.0",
-    "watchify": "^2.4.0"
+    "watchify": "^2.4.0",
+    "wtch": "^3.2.0"
   },
   "scripts": {
     "open": "./cmd.js example/index.js --open --dir example | garnish -v",
