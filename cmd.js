@@ -20,6 +20,9 @@ var liveOpts = xtend(argv)
 argv['live-script'] = argv.live
 delete argv.live
 
+//write to stdout
+argv.stream = process.stdout
+
 var watcher 
 
 require('budo')(entries, argv)
@@ -53,7 +56,7 @@ function setup(budo) {
     globs = ['**/*.{html,css}']
 
   //listen to the bundle glob 
-  globs.push(result.glob)
+  globs.push(budo.glob)
 
   //only trigger LiveReload events if user wants it
   var ignores = liveReload ? bundleFile : '**/*'
