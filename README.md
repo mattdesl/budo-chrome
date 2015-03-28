@@ -17,7 +17,7 @@ This module needs watchify installed locally (preferred) or globally. Example us
 npm install -g budo-chrome watchify garnish
 
 #now we can run our dev server
-budo-chrome index.js --open | garnish -v
+budo-chrome index.js --open | garnish
 ```
 
 This should open Chrome with the remote debugger attached. Changing `index.js` will incrementally update a `bundle.js` file and inject the new source into Chrome. 
@@ -44,7 +44,8 @@ The other options are passed along to [budō](https://github.com/mattdesl/budo) 
 ```sh
 budo Options:
     --outfile, -o   path to output bundle
-    --port          port to serve content, default 9966
+    --port          the port to run, default 9966
+    --host          the host, default "localhost"
     --dir           the directory to serve, and the base for --outfile
     --live          enable LiveReload integration
     --live-plugin   enable LiveReload but do not inject script tag

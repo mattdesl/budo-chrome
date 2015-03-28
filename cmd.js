@@ -1,10 +1,4 @@
 #!/usr/bin/env node
-
-require('bole').output({
-    stream: process.stdout,
-    level: 'debug'
-})
-
 var launch = require('chrome-launch')
 var tmpdir = require('budo/lib/tmpdir')
 var chrome = require('./lib/remote-interface')
@@ -14,79 +8,101 @@ var xtend = require('xtend')
 var args = process.argv.slice(2)
 var argv = require('minimist')(args)
 
-var ready = argv.open ? openURI : function(){}
+var ready = argv.open ? openURI : function() {}
 
-require('budo')(args, function(result) {
-    var uri = result.uri
-    var bundleFile = result.output.from
-    var reloader
+//get entries
+var entries = argv._
+delete argv._
 
-    if (argv.open)
-        openURI(result)
+//make sure budo does not create its own watcher
+//but also ensure that it injects live-reload snippet if user requested it
+var liveOpts = xtend(argv)
+argv['live-script'] = argv.live
+delete argv.live
 
-    //Wait for chrome to boot up before 
-    //starting debugger
-    var delay = argv.open ? 1000 : 0
-    setTimeout(function() {
-        reloader = chrome({ 
-            uri: uri 
-        })
-    }, delay)
+//write to stdout
+argv.stream = process.stdout
 
-    //listen for LiveReload events if needed
-    var globs = []
-    var liveReload = argv.live || argv['live-plugin']
-    if (liveReload)
-        globs = [ '**/*.{html,css}' ]
+var watcher 
 
-    //listen to the bundle glob 
-    globs.push(result.output.glob)
+require('budo')(entries, argv)
+  .on('connect', setup)
+  .on('exit', function() {
+    if (watcher)
+      watcher.close()
+  })
 
-    //only trigger LiveReload events if needed
-    var ignores = liveReload ? bundleFile : '**/*'
+function setup(budo) {
+  var uri = budo.uri
+  var bundleFile = budo.from
+  var reloader
 
-    wtch(globs, { ignoreReload: ignores })
-        .on('watch', function(event, file) {
-            if (reloader 
-                  && file === bundleFile
-                  && (event === 'change' || event === 'add')) {
-                reloader(file)
-            }
-        })
-})
-    
+  if (argv.open)
+    openURI(budo)
+
+  //Wait for chrome to boot up before 
+  //starting debugger
+  var delay = argv.open ? 1000 : 0
+  setTimeout(function() {
+    reloader = chrome({
+      uri: uri
+    })
+  }, delay)
+
+  //listen for HTML/CSS LiveReload events if user requested it
+  var globs = []
+  var liveReload = liveOpts.live || liveOpts['live-plugin']
+  if (liveReload)
+    globs = ['**/*.{html,css}']
+
+  //listen to the bundle glob 
+  globs.push(budo.glob)
+
+  //only trigger LiveReload events if user wants it
+  var ignores = liveReload ? bundleFile : '**/*'
+
+  watcher = wtch(globs, {
+    ignoreReload: ignores
+  }).on('watch', function(event, file) {
+    //trigger bundle script injection
+    if (reloader && file === bundleFile 
+        && (event === 'change' || event === 'add')) {
+      reloader(file)
+    }
+  })
+}
 
 //if budo has created a tmpdir,
 //use that instead of a new one
 function getDir(opt, cb) {
-    if (opt.tmp) 
-        cb(null, opt.dir)
-    else
-        tmpdir(cb)
+  if (opt.tmp)
+    cb(null, opt.dir)
+  else
+    tmpdir(cb)
 }
 
 function openURI(budo, cb) {
-    var port = typeof argv.open === 'number' ? argv.open : 9222
-    var uri = budo.uri
+  var port = typeof argv.open === 'number' ? argv.open : 9222
+  var uri = budo.uri
 
-    getDir(budo.output, function(err, dir) {
-        if (err) {
-            console.error("Could not create tmpdir", err)
-            process.exit(1)
-        }
-        
-        var proc = launch(uri, {
-            dir: dir,
-            nuke: false,
-            args: [
-                '--remote-debugging-port='+port
-            ]
-        })
-        proc.on('close', function() {
-            proc.kill()
-        })
-        budo.on('exit', function() {
-            proc.kill()
-        })
+  getDir(budo, function(err, dir) {
+    if (err) {
+      console.error("Could not create tmpdir", err)
+      process.exit(1)
+    }
+
+    var proc = launch(uri, {
+      dir: dir,
+      nuke: false,
+      args: [
+        '--remote-debugging-port=' + port
+      ]
     })
+    proc.on('close', function() {
+      proc.kill()
+    })
+    budo.on('exit', function() {
+      proc.kill()
+    })
+  })
 }
