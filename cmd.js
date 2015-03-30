@@ -15,21 +15,16 @@ var ready = argv.open ? openURI : function() {}
 var entries = argv._
 delete argv._
 
-//make sure budo does not create its own watcher
-//but also ensure that it injects live-reload snippet if user requested it
+//make sure budo does not handle LiveReload itself
 var liveOpts = xtend(argv)
-argv['live-script'] = argv.live
 delete argv.live
+delete argv['live-plugin']
 
 //write to stdout
 argv.stream = process.stdout
 
 var budo = require('budo')(entries, argv)
   .on('connect', setup)
-  .on('exit', function() {
-    if (watcher)
-      watcher.close()
-  })
 
 function setup(ev) {
   var uri = ev.uri
@@ -62,11 +57,8 @@ function setup(ev) {
 
   //optionally enable live reload as well
   if (liveReload)
-    budo.live()
-
-  //only trigger LiveReload events if user wants it
-  var ignores = liveReload ? bundleFile : '**/*'
-
+    budo.live({ plugin: liveOpts['live-plugin'] })
+  
   budo.on('watch', function(event, file) {
     var trigger = event === 'change' || event === 'add'
 
