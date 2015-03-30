@@ -1,9 +1,10 @@
 #!/usr/bin/env node
+
 var launch = require('chrome-launch')
 var tmpdir = require('budo/lib/tmpdir')
 var chrome = require('./lib/remote-interface')
-var wtch = require('wtch')
 var xtend = require('xtend')
+var path = require('path')
 
 var args = process.argv.slice(2)
 var argv = require('minimist')(args)
@@ -23,18 +24,16 @@ delete argv.live
 //write to stdout
 argv.stream = process.stdout
 
-var watcher 
-
-require('budo')(entries, argv)
+var budo = require('budo')(entries, argv)
   .on('connect', setup)
   .on('exit', function() {
     if (watcher)
       watcher.close()
   })
 
-function setup(budo) {
-  var uri = budo.uri
-  var bundleFile = budo.from
+function setup(ev) {
+  var uri = ev.uri
+  var bundleFile = ev.from
   var reloader
 
   if (argv.open)
@@ -56,18 +55,29 @@ function setup(budo) {
     globs = ['**/*.{html,css}']
 
   //listen to the bundle glob 
-  globs.push(budo.glob)
+  globs.push(ev.glob)
+
+  //enable file watching which budo-chrome needs
+  budo.watch(globs)
+
+  //optionally enable live reload as well
+  if (liveReload)
+    budo.live()
 
   //only trigger LiveReload events if user wants it
   var ignores = liveReload ? bundleFile : '**/*'
 
-  watcher = wtch(globs, {
-    ignoreReload: ignores
-  }).on('watch', function(event, file) {
+  budo.on('watch', function(event, file) {
+    var trigger = event === 'change' || event === 'add'
+
     //trigger bundle script injection
-    if (reloader && file === bundleFile 
-        && (event === 'change' || event === 'add')) {
+    if (file === bundleFile && reloader && trigger) {
       reloader(file)
+    }
+    //otherwise, if live reload is enabled for CSS/HTML...
+    else if (liveReload && trigger 
+        && ['.css', '.html'].indexOf(path.extname(file)) >= 0) {
+      budo.reload(file)
     }
   })
 }
@@ -81,11 +91,11 @@ function getDir(opt, cb) {
     tmpdir(cb)
 }
 
-function openURI(budo, cb) {
+function openURI(ev, cb) {
   var port = typeof argv.open === 'number' ? argv.open : 9222
-  var uri = budo.uri
+  var uri = ev.uri
 
-  getDir(budo, function(err, dir) {
+  getDir(ev, function(err, dir) {
     if (err) {
       console.error("Could not create tmpdir", err)
       process.exit(1)
