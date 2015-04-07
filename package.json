@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "bole": "^2.0.0",
-    "budo": "^2.1.0",
+    "budo": "git://github.com/mattdesl/budo#feature/watchify-api",
     "chrome-launch": "^1.1.3",
     "chrome-remote-interface": "^0.6.1",
     "minimist": "^1.1.1",
