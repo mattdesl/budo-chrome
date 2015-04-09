@@ -22,6 +22,8 @@ budo-chrome index.js --open | garnish
 
 This should open Chrome with the remote debugger attached. Changing `index.js` will incrementally update a `bundle.js` file and inject the new source into Chrome. 
 
+Props to [@caspervonb](https://twitter.com/caspervonb) for the early groundwork.
+
 ## about
 
 See [the docs](docs/README.md) for information on how to get set up. See [the demo](https://www.youtube.com/watch?v=cfgeN3G_Gl0) and its [source code](https://github.com/mattdesl/budo-ball-example) for an example of how it looks in practice. 
