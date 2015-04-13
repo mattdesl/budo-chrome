@@ -1,6 +1,6 @@
 {
   "name": "budo-chrome",
-  "version": "1.0.7",
+  "version": "2.0.0",
   "description": "an extension of budo dev server that supports live script injection",
   "main": "index.js",
   "license": "MIT",
