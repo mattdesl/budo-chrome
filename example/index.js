@@ -7,5 +7,5 @@ function render(ctx, width, height, dt) {
 
     ctx.clearRect(0, 0, width, height)
     var x = Math.sin(time) * 50
-    ctx.fillRect(100 + x, 100, 105, 50)
+    ctx.fillRect(100 + x, 100, 50, 50)
 }

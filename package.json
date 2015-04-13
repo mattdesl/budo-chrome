@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "bole": "^2.0.0",
-    "budo": "^3.0.0-rc2",
+    "budo": "^3.0.3",
     "chrome-launch": "^1.1.3",
     "chrome-remote-interface": "^0.6.1",
     "minimist": "^1.1.1",

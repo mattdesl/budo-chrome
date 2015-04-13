@@ -61,7 +61,6 @@ function setup(ev) {
   //trigger injection on bundle update
   budo
     .on('update', function(file, data) {
-      console.error("Got update")
       data = data.toString()
       if (reloader)
         reloader(file, data)
