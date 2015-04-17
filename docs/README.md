@@ -80,13 +80,3 @@ In some cases, if your bundle only includes "state" and no render or update func
 #### large bundles
 
 When the bundle size reaches roughly over 600kb, you may start seeing very long pauses during script injection. This is a [known issue](https://code.google.com/p/v8/issues/detail?id=3894&q=liveedit&colspec=ID%20Type%20Status%20Priority%20Owner%20Summary%20HW%20OS%20Area%20Stars) and will hopefully be fixed in time. 
-
-#### faster watchify builds
-
-Watchify includes a 600ms delay by default, for better cross-platform support. Some systems (tested on OSX Yosemite) can get by without this delay, which makes script injection much more satisfying to work with.
-
-I have a branch of watchify that uses zero delay by default. You can use it like so:
-
-```sh
-npm install mattdesl/watchify#fast -g
-```
