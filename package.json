@@ -23,15 +23,13 @@
     "xtend": "^4.0.0"
   },
   "devDependencies": {
-    "canvas-testbed": "^1.0.3",
-    "garnish": "^2.1.0",
-    "watchify": "^3.1.0"
+    "canvas-testbed": "^1.0.3"
   },
   "scripts": {
-    "open": "./cmd.js example/index.js:bundle.js --open --no-debug --dir example | garnish -v",
-    "live": "./cmd.js example/index.js:bundle.js --open --no-debug --live --dir example | garnish -v",
+    "open": "./cmd.js example/index.js:bundle.js --open --no-debug --dir example",
+    "live": "./cmd.js example/index.js:bundle.js --open --no-debug --live --dir example",
     "chrome-osx": "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome http://localhost:9966/ --remote-debugging-port=9222",
-    "start": "./cmd.js example/index.js:bundle.js --no-debug --live --dir example | garnish"
+    "start": "./cmd.js example/index.js:bundle.js --no-debug --live --dir example"
   },
   "keywords": [],
   "repository": {

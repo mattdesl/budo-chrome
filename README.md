@@ -18,6 +18,8 @@ npm install -g budo-chrome
 budo-chrome index.js --open
 ```
 
+> :bulb: You may need to quit all running instances of Chrome before continuing.
+
 This should open Chrome with the remote debugger attached. Changing `index.js` will incrementally update a `bundle.js` file and inject the new source into Chrome. 
 
 Props to [@caspervonb](https://twitter.com/caspervonb) for the early groundwork.
